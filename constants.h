@@ -1,4 +1,5 @@
 /****** ONLY USE IF YOU KNOW WHAT YOU ARE DOING ******/
+/****** Basically, don't edit this file... ***********/
 
 // Define as true if you're planning to shift using SPI
 #define USE_SPI false
