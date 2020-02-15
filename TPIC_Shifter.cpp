@@ -1,5 +1,20 @@
+#include "config_h.h"
+#include "constants.h"
 #include "TPIC_Shifter.h"
-#include "config.h"
+
+int specificPinOn[] = {
+  // Int converts to binary on shift-in
+	0, //All off
+	8, //Position 1 on 00001000
+	12, //Position 2 on 00001100
+	14, //Position 3 on 00001110
+	15, //Position 4 on 00001111
+	31, //Position 5 on 00011111
+	63, //Position 6 on 001111111
+	127, //Position 7 on 011111111
+	255 //Position 8 on 111111111
+};
+int currentLives = MAX_LIVES; // because the chip is zero-index
 
 TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton)
 {
@@ -33,9 +48,9 @@ void TPIC_Shifter::TPICBegin()
 }
 
 void TPIC_Shifter::firstRun() {
-	if(runOnce == true) {
+	if(this->runOnce == true) {
 	  resetLives();
-	  runOnce = false;
+	  this->runOnce = false;
 	}
 }
 
@@ -100,24 +115,19 @@ void TPIC_Shifter::gameLives(int type){
 	}else{
 		currentLives++;
 	}
+	
+	writeShift(specificPinOn[currentLives]);
+	
 #if DEBUG
 	Serial.print("Current lives = ");
 	Serial.println(currentLives);
 #endif
-	//Let's dance!
-	ledsDance(10, 1, 20);
-	writeShift(specificPinOn[currentLives]);
 	
 	// RESET
 	if(currentLives == 0){
 		resetLives();
 	}
 }
-
-long int previousMillis = 0;
-long int currentMillis; 
-int reading = LOW;
-bool isReset = true;
 
 bool TPIC_Shifter::ballReturn() {
 	
@@ -175,9 +185,5 @@ void TPIC_Shifter::pulsePin() {
 
 void TPIC_Shifter::resetLives() {
 	// Reset lives
-	ledsFlash(5, 20);
 	currentLives = MAX_LIVES;
-	// Turn the MAX_LIVES pins on
-	writeShift(specificPinOn[currentLives]);
 }
-

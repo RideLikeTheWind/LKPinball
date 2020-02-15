@@ -1,3 +1,6 @@
+#ifndef TPIC_SHIFTER_H
+#define TPIC_SHIFTER_H
+
 #if (ARDUINO >= 100)
  #include "Arduino.h"
 #else
@@ -80,6 +83,11 @@ class TPIC_Shifter
 		int ballReturnButton;
 		bool runOnce = true;
 		
+		long int previousMillis = 0;
+		long int currentMillis; 
+		int reading = LOW;
+		bool isReset = true;
+		
 		//Storage
 		byte IC[];
 		byte ledOff[];
@@ -90,3 +98,4 @@ class TPIC_Shifter
 		void resetLives();
 		 
 };
+#endif
