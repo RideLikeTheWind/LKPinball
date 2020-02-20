@@ -64,7 +64,7 @@ Use to fire other utility or UI functions
 bool ballReturn();
 ```
 
-Reset lives in the game (Private function)
+Reset lives in the game
 Only used internally
 ```c
 void TPIC_Shifter::resetLives();

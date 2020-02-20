@@ -1,3 +1,6 @@
+#ifndef TPIC_SHIFTER_H
+#define TPIC_SHIFTER_H
+
 #if (ARDUINO >= 100)
  #include "Arduino.h"
 #else
@@ -70,6 +73,14 @@ class TPIC_Shifter
 		// Clear all pins of output
 	  void pinClear();
 
+		// Reset lives of the player to MAX_LIVES
+		void resetLives();
+		
+		// Displays current lives in LEDs
+		void displayCurrentLives();
+		
+		int currentLives;
+
 	private:
 		//General
 		int dataPin;
@@ -80,6 +91,11 @@ class TPIC_Shifter
 		int ballReturnButton;
 		bool runOnce = true;
 		
+		long int previousMillis = 0;
+		long int currentMillis; 
+		int reading = LOW;
+		bool isReset = true;
+		
 		//Storage
 		byte IC[];
 		byte ledOff[];
@@ -87,6 +103,6 @@ class TPIC_Shifter
 	
 		//Functions
 		void pulsePin();
-		void resetLives();
-		 
+		
 };
+#endif
