@@ -14,7 +14,10 @@ int specificPinOn[] = {
 	127, //Position 7 on 011111111
 	255 //Position 8 on 111111111
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66b72d7e455e845ab75c9bfc16bbcf5264aacaf2
 int currentLives = MAX_LIVES; // because the chip is zero-index
 
 TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton)
@@ -51,7 +54,10 @@ void TPIC_Shifter::TPICBegin()
 void TPIC_Shifter::firstRun() {
 	if(this->runOnce == true) {
 	  resetLives();
+<<<<<<< HEAD
 		displayCurrentLives();
+=======
+>>>>>>> 66b72d7e455e845ab75c9bfc16bbcf5264aacaf2
 	  this->runOnce = false;
 	}
 }
@@ -120,7 +126,11 @@ void TPIC_Shifter::gameLives(int type){
 		currentLives++;
 	}
 	
+<<<<<<< HEAD
 	displayCurrentLives();
+=======
+	writeShift(specificPinOn[currentLives]);
+>>>>>>> 66b72d7e455e845ab75c9bfc16bbcf5264aacaf2
 	
 #if DEBUG
 	Serial.print("Current lives = ");
@@ -193,3 +203,10 @@ void TPIC_Shifter::pulsePin() {
     digitalWrite(latchPin, LOW);
 }
 
+<<<<<<< HEAD
+=======
+void TPIC_Shifter::resetLives() {
+	// Reset lives
+	currentLives = MAX_LIVES;
+}
+>>>>>>> 66b72d7e455e845ab75c9bfc16bbcf5264aacaf2

@@ -103,6 +103,11 @@ class TPIC_Shifter
 	
 		//Functions
 		void pulsePin();
+<<<<<<< HEAD
 		
+=======
+		void resetLives();
+		 
+>>>>>>> 66b72d7e455e845ab75c9bfc16bbcf5264aacaf2
 };
 #endif
