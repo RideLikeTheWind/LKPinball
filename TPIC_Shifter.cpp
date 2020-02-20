@@ -136,7 +136,7 @@ bool TPIC_Shifter::ballReturn() {
 	bool result = false;
 	reading = digitalRead(ballReturnButton);
 
-	while(reading == HIGH && isReset == true) {git o
+	while(reading == HIGH && isReset == true) {
 	
 #if DEBUG
 	Serial.println(previousMillis);
