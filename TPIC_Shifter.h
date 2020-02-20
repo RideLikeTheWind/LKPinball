@@ -81,8 +81,6 @@ class TPIC_Shifter
 		
 		int currentLives;
 
-		void resetLives();
-
 	private:
 		//General
 		int dataPin;
