@@ -52,6 +52,7 @@ void TPIC_Shifter::firstRun() {
 	if(this->runOnce == true) {
 	  resetLives();
 		displayCurrentLives();
+
 	  this->runOnce = false;
 	}
 }
@@ -121,6 +122,7 @@ void TPIC_Shifter::gameLives(int type){
 	}
 	
 	displayCurrentLives();
+	writeShift(specificPinOn[currentLives]);
 	
 #if DEBUG
 	Serial.print("Current lives = ");
@@ -193,3 +195,8 @@ void TPIC_Shifter::pulsePin() {
     digitalWrite(latchPin, LOW);
 }
 
+void TPIC_Shifter::resetLives() {
+	// Reset lives
+	currentLives = MAX_LIVES;
+	displayCurrentLives();
+}

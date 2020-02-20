@@ -81,6 +81,8 @@ class TPIC_Shifter
 		
 		int currentLives;
 
+		void resetLives();
+
 	private:
 		//General
 		int dataPin;
@@ -103,6 +105,5 @@ class TPIC_Shifter
 	
 		//Functions
 		void pulsePin();
-		
 };
 #endif
