@@ -194,9 +194,3 @@ void TPIC_Shifter::pulsePin() {
     delayMicroseconds(PULSE_DELAY);
     digitalWrite(latchPin, LOW);
 }
-
-void TPIC_Shifter::resetLives() {
-	// Reset lives
-	currentLives = MAX_LIVES;
-	displayCurrentLives();
-}
