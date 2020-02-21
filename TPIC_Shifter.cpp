@@ -87,18 +87,19 @@ void TPIC_Shifter::ledsFlash(int repeats, int speed) {
 	
 }
 
-void TPIC_Shifter::ledsDance(int repeats, int startPin, int speed) {
+void TPIC_Shifter::ledsDance(int repeats, int speed) {
 	// Quick roll of the pins
-	int s = startPin - 1;
 	for (int i = 0; i < repeats; i++) {
-			byte b = B11111111;
-			for (int i = s; i < NUM_CONNECTED; i++){
-		    b = 1<<i;
-		    writeShift(b);
-				delay(speed);
-	    }
-	  }
-		displayCurrentLives();
+		writeShift(0);
+		for (int a = 0; a <= NUM_CONNECTED; a++){
+	    //writeShift(specificPinOn[a]);
+			int randomNum = random(-1, 10);
+			writeShift(specificPinOn[randomNum]);
+			delay(speed);
+    }
+		
+  }
+	displayCurrentLives();
 }
 
 void TPIC_Shifter::specificPin(int pins) {

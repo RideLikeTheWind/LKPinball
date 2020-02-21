@@ -38,7 +38,7 @@ class TPIC_Shifter
 	  	speed = delay in ms for lights to remain on (1000 = 1 second)
 	  */
 	
-	  void ledsDance(int repeats = 10, int startPin = 0, int speed = 10);
+	  void ledsDance(int repeats = 10, int speed = 10);
 	  /* BLOCKING
 	  	Lights roll around quickly
 	  	repeats = number of repeats you want (about 1 per second) | default = 10

@@ -16,7 +16,7 @@ NUM_CONNECTED as an integer of the number of lights connected to the system
 MAX_LIVES as an integer of the number of lives the pinball machine allows
 Do not edit or add other parameters in that fonfig file
 ```c
-#define NUM CONNECTED 8
+#define NUM_CONNECTED 8
 #define MAX_LIVES 3
 ```
 
@@ -40,15 +40,15 @@ Flashes all lights on and off
 repeats = number of flashes
 speed = delay in ms for lights to remain on (1000 = 1 second)
 ```c
-void TPICFlash(int repeats, int speed);
+void ledsFlash(int repeats, int speed);
 ```
 
 **BLOCKING**
 Lights roll around quickly
 repeats = number of repeats you want (about 1 per second)
-startPin = pin you want it to start from
+speed = how quickly the lights should change. Slower is a bigger number (> 20 starts getting slow)
 ```c 
-void ledsDance(int repeats, int startPin);
+void ledsDance(int repeats, int speed);
 ```
 
 Turn on or off a specific pin
@@ -60,12 +60,12 @@ void specificPin(int pins);
 #### Game Functions
 Manages the returned ball from the pinball machine returns true if button is pressed
 Use to fire other utility or UI functions
+Returns: bool true || false 
 ```c
 bool ballReturn();
 ```
 
 Reset lives in the game
-Only used internally
 ```c
 void TPIC_Shifter::resetLives();
 ```
