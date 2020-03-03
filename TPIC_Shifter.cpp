@@ -31,6 +31,7 @@ int specificPinOn[] = {
 };
 
 int currentLives = 0;
+int game_mode = 0;
 
 TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton, int max_lives, int num_connected)
 {
@@ -129,25 +130,8 @@ void TPIC_Shifter::specificPin(int pins) {
 
 // Game Functions
 
-void TPIC_Shifter::gameLives(int type){
-	// Add or remove lives
-	// depending on parameters (see h file)
-	// Set MAX_LIVES in the config file
-	
-	if(type == 1){
-		currentLives--;
-	}else{
-		currentLives++;
-	}
-	
-	displayCurrentLives();
-	writeShift(specificPinOn[currentLives]);
-	
-#if DEBUG
-	Serial.print("Current lives = ");
-	Serial.println(currentLives);
-#endif
-	
+void TPIC_Shifter::gameMode(int gm){
+	this->game_mode = gm;
 }
 
 bool TPIC_Shifter::ballReturn() {
@@ -177,6 +161,40 @@ bool TPIC_Shifter::ballReturn() {
 	}
 	
 	return result;
+}
+
+bool TPIC_Shifter::endOfGame() {
+	
+	if (game_mode == 0) {
+		if (currentLives == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		if (currentLives == NUM_CONNECTED) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+	return false;
+}
+
+void TPIC_Shifter::updateUI() {
+	if(this->game_mode == 0){
+		currentLives--;
+	}else{
+		currentLives++;
+	}
+	
+	displayCurrentLives();
+	writeShift(specificPinOn[currentLives]);
+	
+#if DEBUG
+	Serial.print("Current lives = ");
+	Serial.println(currentLives);
+#endif
 }
 
 void TPIC_Shifter::resetLives() {

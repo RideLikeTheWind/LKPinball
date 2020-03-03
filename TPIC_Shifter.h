@@ -48,18 +48,28 @@ class TPIC_Shifter
 		
 		// Specific Game Functions
 	
-	  void gameLives(int type = 1);
+	  void gameMode(int gm=0);
 	  /* 
 	  	Lights turn off one at a time by shifting on or off 
 	  	startPin = pin to start the shift from
-	  	type = 	1: remove lives. 
-	  					2: add lives.
+	  	gm = 	0: lose lives. 
+	  					1: gain points.
 	  */
+		
+		bool endOfGame();
+		/* 
+			Check to see if the game has ended
+		*/
 		
 		bool ballReturn();
 		/*
 			Manages the returned ball from the pinball machine
 			returns true if button is pressed
+		*/
+		
+		void updateUI();
+		/* 
+			Updates the LEDs based on Game Mode
 		*/
 		
 		// Utility Functions
@@ -83,6 +93,7 @@ class TPIC_Shifter
 		int max_lives;
 		int MAX_LIVES;
 		int NUM_CONNECTED;
+		int game_mode;
 
 	private:
 		//General

@@ -7,7 +7,7 @@ const int clockPin = 5;
 const int latchPin = 6;
 const int pinStatus = 7;
 const int ballReturnPin = 2;
-int max_lives = 3;
+int max_lives = 4;
 int num_connected = 8;
 
 TPIC_Shifter pinballMachine = TPIC_Shifter(dataPin, clockPin, latchPin, pinStatus, ballReturnPin, max_lives, num_connected);
@@ -15,6 +15,7 @@ TPIC_Shifter pinballMachine = TPIC_Shifter(dataPin, clockPin, latchPin, pinStatu
 void setup() {
   // put your setup code here, to run once:
   pinballMachine.TPICBegin();
+  pinballMachine.gameMode(0); //Or 1 for gain points mode
 }
 
 void loop() {
@@ -23,11 +24,11 @@ void loop() {
 
   // You may want to do something here to 
   if(pinballMachine.ballReturn() == true){
-    pinballMachine.gameLives(0);
+    pinballMachine.updateUI();
     pinballMachine.ledsFlash(10,20);
   }
 
-  if(pinballMachine.currentLives == 8){
+  if(pinballMachine.endOfGame() == true){
     delay(1000);
     pinballMachine.ledsDance(10,30);
     pinballMachine.resetLives();
