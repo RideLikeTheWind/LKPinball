@@ -10,22 +10,33 @@ Author: J Mascorella
 Github: @iridelikethewind
 Year: 2020  
 
-### Config
-Open the Config.h file and set parameters. You will need to supply
-NUM_CONNECTED as an integer of the number of lights connected to the system
-MAX_LIVES as an integer of the number of lives the pinball machine allows
-Do not edit or add other parameters in that fonfig file
+### Configuration
+You will need to supply the following parameters at the top of the main .ino file in Arduino.
+dataPin: The pin "Ser. In" on the white board is connected to on Arduino
+clockPin: *NOTE* this should be the number the _LATCH_ pin is connected to on the arduino. It was a mistake in wiring the original board.
+latchPin: *NOTE* this should be the number the _CLOCK_ pin is connected to on the arduino. It was a mistake in wiring the original board.
+pinStatus: Pin G(bar) is connected to on Arduino
+ballReturnPin: Pin the switch is connected to on Arduino
+
+max_lives: If game mode is 0 (lose life mode) then you will set this to the max_lives for the game. Otherwise, if game mode is 1 (gain points mode) then set this to 0 so the lights count up.
+num_connected: the number of lights you have connected to the Arduino (up to 8).
+
 ```c
-#define NUM_CONNECTED 8
-#define MAX_LIVES 3
+const int dataPin = 9;
+const int clockPin = 5; // See note above
+const int latchPin = 6; // See note above
+const int pinStatus = 7;
+const int ballReturnPin = 2;
+int max_lives = 3;
+int num_connected = 8;
 ```
 
 ### Functions(params)
 
-#### Setup
-Constructor
+#### Initialisation
+Constructor: Call this before the void setup() and loop() functions
 ```c
-TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton);
+TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton, int max_lives, int num_connected);
 ```
 
 Setup function 
@@ -58,6 +69,17 @@ void specificPin(int pins);
 ```
 
 #### Game Functions
+
+Update the UI to display the current lives remaining or count up the points available. 
+```c
+void updateUI() 
+```
+
+Check if the game has ended. Returns true if all lives lost, true if all points gained. 
+```c
+void endOfGame() 
+```
+
 Manages the returned ball from the pinball machine returns true if button is pressed
 Use to fire other utility or UI functions
 Returns: bool true || false 
@@ -92,10 +114,17 @@ Clear all pins of output
 void pinClear();
 ```
 
+#### Debug mode
+Define DEBUG in the config code (before instantiating TPIC_SHIFTER)
+```c
+#define DEBUG true
+```
+
 ### To do
 * SPI is not implemented yet. It is experimental and may not work fully, or at all. 
 * Updates required to provide other UI Functions
 * Need to explore improvements to the circuit to which this library is associated
+* Refactor code to be more agnostic toward game mode
 
 
 ### License
