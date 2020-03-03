@@ -1,5 +1,3 @@
-#include <config_h.h>
-#include <constants.h>
 #include <TPIC_Shifter.h>
 
 

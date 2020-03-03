@@ -1,5 +1,20 @@
-#include "config_h.h"
-#include "constants.h"
+/*##########################################*/
+/****** ONLY CHANGE IF YOU KNOW WHAT YOU ARE DOING ******/
+/****** Basically, don't edit this file... ***********/
+
+// Define as true if you're planning to shift using SPI
+#define USE_SPI false
+
+//Define if you want to debug (writes to Serial Monitor)
+#define DEBUG true
+
+#if USE_SPI
+#include <SPI.h>
+#endif
+
+#define PULSE_DELAY 10
+/*##########################################*/
+
 #include "TPIC_Shifter.h"
 
 int specificPinOn[] = {
@@ -15,15 +30,18 @@ int specificPinOn[] = {
 	255 //Position 8 on 111111111
 };
 
-int currentLives = MAX_LIVES; // because the chip is zero-index
+int currentLives = 0;
 
-TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton)
+TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin, int ballReturnButton, int max_lives, int num_connected)
 {
   this->dataPin = dataPin;
   this->clockPin = clockPin;
   this->latchPin = latchPin;
   this->clearPin = clearPin;
 	this->ballReturnButton = ballReturnButton;
+	this->MAX_LIVES = max_lives;
+	currentLives = this->MAX_LIVES; // because the chip is zero-index
+	this->NUM_CONNECTED = num_connected;
 }
 
 void TPIC_Shifter::TPICBegin()
@@ -91,7 +109,7 @@ void TPIC_Shifter::ledsDance(int repeats, int speed) {
 	// Quick roll of the pins
 	for (int i = 0; i < repeats; i++) {
 		writeShift(0);
-		for (int a = 0; a <= NUM_CONNECTED; a++){
+		for (int a = 0; a <= this->NUM_CONNECTED; a++){
 	    //writeShift(specificPinOn[a]);
 			int randomNum = random(-1, 10);
 			writeShift(specificPinOn[randomNum]);

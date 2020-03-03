@@ -11,7 +11,7 @@ class TPIC_Shifter
 {
   public:
 	  // Constructor
-	  TPIC_Shifter(int dataPin,int clockPin, int latchPin, int clearPin, int ballReturnButton=0);
+	  TPIC_Shifter(int dataPin,int clockPin, int latchPin, int clearPin, int ballReturnButton=0, int max_lives=3, int num_connected=8);
 
 	  // Setup pins
 	  void TPICBegin(); 
@@ -80,6 +80,9 @@ class TPIC_Shifter
 		void displayCurrentLives();
 		
 		int currentLives;
+		int max_lives;
+		int MAX_LIVES;
+		int NUM_CONNECTED;
 
 	private:
 		//General
