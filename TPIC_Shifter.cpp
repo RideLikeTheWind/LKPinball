@@ -6,7 +6,9 @@
 #define USE_SPI false
 
 //Define if you want to debug (writes to Serial Monitor)
+#ifndef DEBUG
 #define DEBUG true
+#endif
 
 #if USE_SPI
 #include <SPI.h>
