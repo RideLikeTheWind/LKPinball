@@ -62,8 +62,8 @@ void TPIC_Shifter::TPICBegin()
   //always set these to output
 	pinMode(latchPin, OUTPUT);
 	pinMode(clearPin, OUTPUT);
-	pinMode(ballReturnButton, INPUT);
-	
+	pinMode(ballReturnButton, INPUT_PULLUP);
+
 #if DEBUG
 	Serial.begin(9600);
 #endif
@@ -79,14 +79,14 @@ void TPIC_Shifter::firstRun() {
 }
 
 void TPIC_Shifter::writeShift(int b) {
-	
+
 #if USE_SPI
 	SPI.transfer(b);
-#else 
+#else
 	shiftOut(dataPin, clockPin, LSBFIRST, b);
 #endif
 	pulsePin();
-	
+
 #if DEBUG
 	Serial.print("ByteOut = ");
 	Serial.println(b);
@@ -97,7 +97,7 @@ void TPIC_Shifter::writeShift(int b) {
 // UI Functions
 
 void TPIC_Shifter::ledsFlash(int repeats, int speed) {
-	
+
 	for (int i = 0; i < repeats; i++){
 		writeShift(0);
 		delay(speed);
@@ -105,7 +105,7 @@ void TPIC_Shifter::ledsFlash(int repeats, int speed) {
 		delay(speed);
 	}
 	displayCurrentLives();
-	
+
 }
 
 void TPIC_Shifter::ledsDance(int repeats, int speed) {
@@ -118,16 +118,16 @@ void TPIC_Shifter::ledsDance(int repeats, int speed) {
 			writeShift(specificPinOn[randomNum]);
 			delay(speed);
     }
-		
+
   }
 	displayCurrentLives();
 }
 
 void TPIC_Shifter::specificPin(int pins) {
-	
+
 	int b = specificPinOn[pins];
 	writeShift(b);
-	
+
 }
 
 // Game Functions
@@ -137,12 +137,12 @@ void TPIC_Shifter::gameMode(int gm){
 }
 
 bool TPIC_Shifter::ballReturn() {
-	
+
 	bool result = false;
 	reading = digitalRead(ballReturnButton);
 
-	while(reading == HIGH && isReset == true) {
-	
+	while(reading == LOW && isReset == true) {
+
 #if DEBUG
 	Serial.println(previousMillis);
 	Serial.println(currentMillis);
@@ -154,19 +154,19 @@ bool TPIC_Shifter::ballReturn() {
 		}
 		reading = digitalRead(ballReturnButton);
 	}
-	
-	if(reading != HIGH) {
+
+	if(reading != LOW) {
 		previousMillis = millis();
 		isReset = true;
 	}else{
 		isReset = false;
 	}
-	
+
 	return result;
 }
 
 bool TPIC_Shifter::endOfGame() {
-	
+
 	if (game_mode == 0) {
 		if (currentLives == 0){
 			return true;
@@ -189,10 +189,10 @@ void TPIC_Shifter::updateUI() {
 	}else{
 		currentLives++;
 	}
-	
+
 	displayCurrentLives();
 	writeShift(specificPinOn[currentLives]);
-	
+
 #if DEBUG
 	Serial.print("Current lives = ");
 	Serial.println(currentLives);
@@ -211,13 +211,13 @@ void TPIC_Shifter::displayCurrentLives(){
 
 // Utility
 void TPIC_Shifter::pinClear() {
-	// Turn all the lights off	
+	// Turn all the lights off
 	writeShift(0);
 }
 
 void TPIC_Shifter::pinDrains(int visibility) {
 	//Turn the pins off or on
-	
+
 	if (visibility == HIGH){
 	    digitalWrite(clearPin, LOW);
 	  }else{
@@ -226,7 +226,7 @@ void TPIC_Shifter::pinDrains(int visibility) {
 }
 
 // Private
-	
+
 void TPIC_Shifter::pulsePin() {
 	//pulse to transfer bits to the display register
     digitalWrite(latchPin, HIGH);

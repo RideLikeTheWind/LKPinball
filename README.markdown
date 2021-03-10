@@ -29,7 +29,7 @@ const int pinStatus = 7;
 const int ballReturnPin = 2;
 int max_lives = 3;
 int num_connected = 8;
-``` 
+```
 
 ### Functions(params)
 
