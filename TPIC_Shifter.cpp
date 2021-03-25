@@ -43,7 +43,7 @@ TPIC_Shifter::TPIC_Shifter(int dataPin, int clockPin, int latchPin, int clearPin
   this->clearPin = clearPin;
 	this->ballReturnButton = ballReturnButton;
 	this->MAX_LIVES = max_lives;
-	currentLives = this->MAX_LIVES; // because the chip is zero-index
+	currentLives = 0; // because the chip is zero-index
 	this->NUM_CONNECTED = num_connected;
 }
 
@@ -64,13 +64,17 @@ void TPIC_Shifter::TPICBegin()
 	pinMode(clearPin, OUTPUT);
 	pinMode(ballReturnButton, INPUT_PULLUP);
 
-#if DEBUG
 	Serial.begin(9600);
-#endif
 }
 
 void TPIC_Shifter::firstRun() {
 	if(this->runOnce == true) {
+		if(this->MAX_LIVES == 0){
+			Serial.println("Looks like you have set Max Lives to 0. This will cause an error.");
+			Serial.println("Setting Max Lives to num_connected for now..");
+			this->MAX_LIVES = this->NUM_CONNECTED;
+		}
+
 	  resetLives();
 		displayCurrentLives();
 
@@ -144,7 +148,9 @@ bool TPIC_Shifter::ballReturn() {
 	while(reading == LOW && isReset == true) {
 
 #if DEBUG
-	Serial.println(previousMillis);
+	Serial.print("Button Pressed: PM= ");
+	Serial.print(previousMillis);
+	Serial.print(" & CM= ");
 	Serial.println(currentMillis);
 #endif
 
@@ -156,6 +162,11 @@ bool TPIC_Shifter::ballReturn() {
 	}
 
 	if(reading != LOW) {
+
+#if DEBUG
+	Serial.println("Button unpressed");
+#endif
+
 		previousMillis = millis();
 		isReset = true;
 	}else{
@@ -167,14 +178,16 @@ bool TPIC_Shifter::ballReturn() {
 
 bool TPIC_Shifter::endOfGame() {
 
-	if (game_mode == 0) {
+	if (this->game_mode == LOSE_LIFE_MODE) {
 		if (currentLives == 0){
+			Serial.println("All lives lost! Game over...");
 			return true;
 		}else{
 			return false;
 		}
-	}else{
-		if (currentLives == NUM_CONNECTED) {
+	}else if (this->game_mode == WIN_POINT_MODE){
+		if (currentLives == this->MAX_LIVES) {
+			Serial.println("Max points! Game over...");
 			return true;
 		}else{
 			return false;
@@ -189,7 +202,6 @@ void TPIC_Shifter::updateUI() {
 	}else{
 		currentLives++;
 	}
-
 	displayCurrentLives();
 	writeShift(specificPinOn[currentLives]);
 
@@ -201,7 +213,11 @@ void TPIC_Shifter::updateUI() {
 
 void TPIC_Shifter::resetLives() {
 	// Reset lives
-	currentLives = MAX_LIVES;
+	if(game_mode == LOSE_LIFE_MODE){
+		currentLives = this->MAX_LIVES;
+	}else if(game_mode == WIN_POINT_MODE){
+		currentLives = 0;
+	}
 	displayCurrentLives();
 }
 
@@ -217,7 +233,6 @@ void TPIC_Shifter::pinClear() {
 
 void TPIC_Shifter::pinDrains(int visibility) {
 	//Turn the pins off or on
-
 	if (visibility == HIGH){
 	    digitalWrite(clearPin, LOW);
 	  }else{
