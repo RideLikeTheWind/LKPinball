@@ -54,7 +54,7 @@ Change the game mode so you can either lose points or gain them.
 **Important** - Make sure you have set max_lives to something greater than 0, and not more than the number of lights connected (num_connected)
 The options are:
 * LOSE_LIFE_MODE
-* GAIN_POINT_MODE
+* WIN_POINT_MODE
 ```c
 void gameMode(int mode);
 ```
